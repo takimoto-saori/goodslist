@@ -39,7 +39,7 @@
 						<td><c:out value="${event.artistName}" /></td>
 						<td><c:out value="${event.eventMemo}" /></td>
 						<td>
-							<form action="event" method="post">
+							<form action="event" method="get">
 								<input type="hidden" name="eventNo" value="${event.eventId}">
 								<input type="submit" value="選択">
 							</form>

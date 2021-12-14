@@ -42,6 +42,7 @@ public class EventDao {
 		}
 	}
 
+	//イベント全件検索、キーワード検索用のメソッド
 	public ArrayList<EventBean> getEventList(String keyWord) throws SQLException {
 		ResultSet rs = null;
 		if (keyWord == null || keyWord.isEmpty()) {		//キーワードが未入力の場合
@@ -74,4 +75,33 @@ public class EventDao {
 
 	return eventList;
 	}
+
+	//イベントID検索用のメソッド
+	public EventBean getEventId(int eventId) throws SQLException {
+		EventBean bean = null;
+		PreparedStatement ps_id = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM goods_list_db.events WHERE event_id = ?";
+			ps_id = connection.prepareStatement(sql);
+			ps_id.setInt(1, eventId);
+			rs = ps_id.executeQuery();
+			if (rs.next()) {
+				bean = new EventBean();
+				bean.setEventId(rs.getInt("event_id"));
+				bean.setEventName(rs.getString("event_name"));
+				bean.setArtistName(rs.getString("artist_name"));
+				bean.setEventMemo(rs.getString("event_memo"));
+			}
+			if (rs != null) {
+				rs.close();
+			}
+		} finally {
+			if (ps_id != null) {
+				ps_id.close();
+			}
+		}
+		return bean;
+	}
+
 }
