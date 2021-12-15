@@ -104,4 +104,34 @@ public class EventDao {
 		return bean;
 	}
 
+	//event表に登録するメソッド
+	public int insertEvent(EventBean event) throws SQLException {
+		int numRow = 0;
+		PreparedStatement ps = null;
+		try {
+			//トランザクション開始
+			connection.setAutoCommit(false);
+			//SQL文
+			String sql = "INSERT INTO events (event_name, artist_name, event_memo) VALUES (?, ?, ?)";
+			ps = connection.prepareStatement(sql);
+			//INパラメーターの設定
+			ps.setString(1, event.getEventName());
+			ps.setString(2, event.getArtistName());
+			ps.setString(3, event.getEventMemo());
+			//SQLの発行、登録された行数を取得
+			numRow = ps.executeUpdate();
+		} finally {
+			if (numRow > 0) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
+			//切断処理
+			if (ps != null) {
+				ps.close();
+			}
+		}
+		return numRow;
+	}
+
 }

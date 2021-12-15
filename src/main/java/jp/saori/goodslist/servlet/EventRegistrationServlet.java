@@ -1,6 +1,7 @@
 package jp.saori.goodslist.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -9,6 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import jp.saori.goodslist.action.EventInsert;
 
 /**
  * Servlet implementation class EventSearchServlet
@@ -23,7 +26,7 @@ public class EventRegistrationServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//JSPへの転送
 		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher = context.getRequestDispatcher("/maintenance.jsp");
+		RequestDispatcher dispatcher = context.getRequestDispatcher("/eventRegistration.jsp");
 		dispatcher.forward(request, response);
 	}
 
@@ -33,11 +36,33 @@ public class EventRegistrationServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//リクエスト処理
 		request.setCharacterEncoding("UTF-8");
+		String btn = request.getParameter("btn");
+		String jsp;
 		//イベント登録
-
+		try {
+			if (btn != null && btn.equals("eventregist")){
+				EventInsert ei = new EventInsert();
+				ei.execute(request);
+				jsp = "/eventRegistration.jsp";
+			} else {
+				request.setAttribute("errorMessage", "不正アクセスです");
+				request.setAttribute("backAddress", "registration");
+				jsp = "/error.jsp";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("backAddress", "registration");
+			jsp = "/error.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("backAddress", "registration");
+			jsp = "/error.jsp";
+		}
 		//転送処理
 		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher = context.getRequestDispatcher("/eventRegistration.jsp");
+		RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
 		dispatcher.forward(request, response);
 	}
 
