@@ -5,17 +5,18 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Top</title>
+<link rel="stylesheet" href="style.css">
+<title>グッズリスト</title>
 </head>
 <body>
-	<header><h1>イベント検索・登録</h1></header>
+	<jsp:include page="header.jsp" />
 	<main>
+		<h1>イベント検索・登録ページ</h1>
 		<form action="search" method="get">
-			<input type="submit" value="イベント検索">
+			<p><input type="submit" value="イベント検索" class="btn"><p>
 		</form>
-		<br>
 		<form action="registration" method="get">
-			<input type="submit" value="イベント登録">
+			<p><input type="submit" value="イベント登録" class="btn"></p>
 		</form>
 	</main>
 </body>

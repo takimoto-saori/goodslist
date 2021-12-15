@@ -2,7 +2,6 @@ package jp.saori.goodslist.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,8 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import jp.saori.goodslist.dao.EventDao;
-import jp.saori.goodslist.entity.EventBean;
+import jp.saori.goodslist.action.EventSearch;
 
 /**
  * Servlet implementation class EventSearchServlet
@@ -38,34 +36,34 @@ public class EventSearchServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//リクエスト処理
 		request.setCharacterEncoding("UTF-8");
-		//検索処理
 		String searchBtn = request.getParameter("btn");
-		if(searchBtn != null && searchBtn.equals("eventSearch")) {
-			EventDao dao = null;
-			String keyWord = request.getParameter("paramEvent");
-			try {
-				dao = new EventDao();
-				ArrayList<EventBean> eventList = dao.getEventList(keyWord);
-				if (eventList.isEmpty()) {
-					request.setAttribute("message", "該当イベントはありません");
-				} else {
-					request.setAttribute("eventList", eventList);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				request.setAttribute("errorMessage", "エラーが発生しました");
-			} catch (Exception e) {
-				e.printStackTrace();
-				request.setAttribute("errorMessage", "エラーが発生しました");
-			} finally {
-				if (dao != null) {
-					dao.close();
-				}
+		String jsp;
+		try {
+			if(searchBtn != null && searchBtn.equals("eventSearch")) {
+				//イベント検索
+				EventSearch es = new EventSearch();
+				es.execute(request);
+				jsp = "/eventSearch.jsp";
+			} else {
+				request.setAttribute("errorMessage", "不正アクセスです");
+				request.setAttribute("backAddress", "search");
+				jsp = "/error.jsp";
 			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("backAddress", "search");
+			jsp = "/error.jsp";
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("backAddress", "search");
+			jsp = "/error.jsp";
 		}
+
 		//転送処理
 		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher = context.getRequestDispatcher("/eventSearch.jsp");
+		RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
 		dispatcher.forward(request, response);
 	}
 

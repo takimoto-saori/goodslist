@@ -56,7 +56,6 @@ public class GoodsDao {
 				goods.setGoodsPrice(rs.getInt("goods_price"));
 				goods.setGoodsMemo(rs.getString("goods_memo"));
 				goods.setMaxNum(num);
-				goods.setNumberList();
 				goodsList.add(goods);
 			}
 			//切断処理
@@ -93,7 +92,6 @@ public class GoodsDao {
 				bean.setGoodsPrice(rs.getInt("goods_price"));
 				bean.setGoodsMemo(rs.getString("goods_memo"));
 				bean.setMaxNum(num);
-				bean.setNumberList();
 			}
 			//切断処理
 			if (rs != null) {

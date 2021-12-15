@@ -5,17 +5,19 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>EventSearch</title>
+<link rel="stylesheet" href="style.css">
+<title>グッズリスト</title>
 </head>
 <body>
-	<header><h1>イベント検索ページ</h1></header>
+	<jsp:include page="header.jsp" />
 	<main>
+		<h1>イベント検索ページ</h1>
 		<form action="search" method="post">
 			<p>検索したいイベント名もしくはアーティスト名を入力してください。</p>
 			<p>
 				<input type="text" name="paramEvent">
 				<input type="hidden" name="btn" value="eventSearch">
-				<input type="submit" value="イベント検索">
+				<input type="submit" value="イベント検索" class="btn1">
 			</p>
 		</form>
 		<c:if test="${not empty requestScope.message}">
@@ -25,8 +27,8 @@
 			<p>${requestScope.errorMessage}</p>
 		</c:if>
 		<c:if test="${not empty requestScope.eventList}">
-			<h2>検索結果</h2>
-			<table border="1">
+			<h3>検索結果</h3>
+			<table id="table" border="1">
 				<tr>
 					<th>イベント名</th>
 					<th>アーティスト名</th>
@@ -41,7 +43,8 @@
 						<td>
 							<form action="event" method="get">
 								<input type="hidden" name="eventNo" value="${event.eventId}">
-								<input type="submit" value="選択">
+								<input type="hidden" name="btn" value="select">
+								<input type="submit" value="選択" class="btn1">
 							</form>
 						</td>
 					</tr>

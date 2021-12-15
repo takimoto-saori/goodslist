@@ -1,10 +1,6 @@
 package jp.saori.goodslist.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.saori.goodslist.model.ListBoxModel;
 
 public class GoodsBean implements Serializable {
 	private int goodsId;		//グッズID
@@ -13,7 +9,6 @@ public class GoodsBean implements Serializable {
 	private int goodsPrice;	//価格
 	private String goodsMemo;	//備考
 	private int maxNum;		//購入制限
-	private List<ListBoxModel> numberList;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -50,22 +45,6 @@ public class GoodsBean implements Serializable {
 	}
 	public void setMaxNum(int maxNum) {
 		this.maxNum = maxNum;
-	}
-
-	public List<ListBoxModel> getNumberList(int maxNum){
-		numberList = new ArrayList<ListBoxModel>();
-		for (int i = 0; i <= maxNum; i++) {
-			numberList.add(new ListBoxModel(Integer.toString(i),Integer.toString(i)));
-		}
-		return numberList;
-	}
-
-	public List<ListBoxModel> getNumberList() {
-		return numberList;
-	}
-
-	public void setNumberList() {
-		this.numberList = getNumberList(maxNum);
 	}
 
 }

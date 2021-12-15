@@ -1,0 +1,61 @@
+body {
+	font-family:"Yu Gothic", "メイリオ", "MS PGothic", sans-serif;
+}
+header{
+	background-color: #4682b4;
+	padding: 10px;
+}
+header h1 {
+	color: #f0f8ff;
+	font-weight: bold;
+	text-align: center;
+}
+main h1 {
+	color: #191970;
+	font-weight: bold;
+	text-align: center;
+}
+h2 {
+	font-weight: bold;
+	text-align: center;
+}
+h3 {
+	font-weight: normal;
+	text-align: center;
+}
+p {
+	text-align: center;
+}
+table {
+	margin: 16px 0px;
+}
+th, td {
+	padding: 8px;
+}
+.btn {
+	background: #4169e1;
+	border: 0;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 1em;
+	padding: 4px 16px;
+	margin: 0px 5px;
+}
+.btn:hover {
+	transform: scale(1.2);
+}
+.btn1:hover {
+	transform: scale(1.1);
+}
+.total{
+	font-weight: bold;
+}
+.errors {
+	color: #ff0000;
+}
+.message {
+	color: #191970;
+}
+#table {
+	margin: auto;
+}

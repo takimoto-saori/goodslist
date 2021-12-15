@@ -6,13 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="style.css">
-<title>グッズリスト</title>
+<title>error</title>
 </head>
 <body>
 	<jsp:include page="header.jsp" />
 	<main>
-		<h1>制作中</h1>
-		<p><a href="top">トップへ戻る</a>
+		<h1>エラーページ</h1>
+		<p class="error">${requestScope.errorMessage}</p>
+		<p><a href="${backAddress}">戻る</a>&nbsp;/&nbsp;
+		<a href="top">トップへ戻る</a></p>
 	</main>
 </body>
 </html>

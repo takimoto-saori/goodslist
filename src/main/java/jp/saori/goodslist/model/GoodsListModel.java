@@ -11,8 +11,8 @@ public class GoodsListModel implements Serializable {
 	private int num;				//個数
 	private int subTotal;			//小計
 	private String goodsMemo;		//備考
-	private int maxNum;		//購入制限
-	private List<ListBoxModel> numberList;
+	private int maxNum;			//購入制限
+	private List<ListBoxModel> numberList;		//ドロップダウンリスト
 
 	public int getGoodsId() {
 		return goodsId;
@@ -56,9 +56,9 @@ public class GoodsListModel implements Serializable {
 	public List<ListBoxModel> getNumberList() {
 		return numberList;
 	}
-//	public void setNumberList(List<ListBoxModel> numberList) {
-//		this.numberList = numberList;
-//	}
+	public void setNumberList(List<ListBoxModel> numberList) {
+		this.numberList = numberList;
+	}
 	//小計を取得するメソッド
 	public int getSubTotal() {
 		return goodsPrice * num;
