@@ -13,7 +13,7 @@
 	<main>
 		<h1>エラーページ</h1>
 		<p class="errors">${requestScope.errorMessage}</p>
-		<p><a href="${backAddress}">戻る</a>&nbsp;/&nbsp;
+		<p><a href="${requestScope.backAddress}">戻る</a>&nbsp;/&nbsp;
 		<a href="top">トップへ戻る</a></p>
 	</main>
 </body>

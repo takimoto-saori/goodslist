@@ -11,21 +11,33 @@
 <body>
 	<jsp:include page="header.jsp" />
 	<main>
-		<h1>イベントページ</h1>
 		<hr>
 		<h2><c:out value="${sessionScope.eventList.eventName}"></c:out></h2>
 		<h3><c:out value="${sessionScope.eventList.artistName}"></c:out></h3>
 		<p><c:out value="${sessionScope.eventList.eventMemo}"></c:out></p>
 		<hr>
-		<form action="goodsregistration" method="get">
-			<h3>グッズリスト</h3>
-			<p>
-				<input type="hidden" name="btn" value="goodsregist">
-				<input type="submit" value="グッズ登録" class="btn">
-				<input type="hidden" name="btn" value="goodsdel">
-				<input type="submit" value="グッズ削除" class="btn">
-			</p>
+		<form action="goodsregistration" method="post">
+			<p><input type="hidden" name="btn">
+				<input type="submit" value="グッズ登録" class="btn" name="goodsregist">
+				<input type="submit" value="グッズ削除" class="btn" name="goodsdel"></p>
 		</form>
+	<!--	<table id="table">
+			<tr>
+				<td>
+					<form action="goodsregistration" method="post">
+						<input type="hidden" name="btn" value="goodsregist">
+						<input type="submit" value="グッズ登録" class="btn">
+					</form>
+				</td>
+				<td>
+					<form action="goodsregistration" method="post">
+						<input type="hidden" name="btn" value="goodsdel">
+						<input type="submit" value="グッズ削除" class="btn">
+					</form>
+				</td>
+			</tr>
+		</table> -->
+		<h3>グッズリスト</h3>
 		<c:if test="${not empty requestScope.message}">
 			<p class="message">${requestScope.message}</p>
 		</c:if>
@@ -75,8 +87,10 @@
 			</p>
 		</c:if>
 		</form>
-		<p><a href="search">イベント検索へ戻る</a>&nbsp;/&nbsp;
-		<a href="top">トップへ戻る</a></p>
+		<p>
+			<a href="search">イベント検索へ戻る</a>&nbsp;/&nbsp;
+			<a href="top">トップへ戻る</a>
+		</p>
 	</main>
 </body>
 </html>

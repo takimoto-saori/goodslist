@@ -15,12 +15,17 @@ public class EventIdSearch {
 	public void execute(HttpServletRequest request) throws Exception {
 		//セッションを取得
 		HttpSession session = request.getSession(true);
+//		System.out.println("EventIdSearch : " + session);
+
 		//イベントIDを取得
 		String eventNo = request.getParameter("eventNo");
-		if (eventNo != null && !eventNo.isEmpty()) {
-			EventDao eDao = null;
-			GoodsDao gDao = null;
-			try {
+		if (eventNo == null || eventNo.isEmpty()) {
+			eventNo = (String)session.getAttribute("eventNo");
+		}
+		EventDao eDao = null;
+		GoodsDao gDao = null;
+		try {
+			if (eventNo != null && !eventNo.isEmpty()) {
 				eDao = new EventDao();
 				//取得したイベントIDからイベント情報を検索して取得
 				EventBean eventBean = eDao.getEventId(Integer.parseInt(eventNo));
@@ -50,15 +55,14 @@ public class EventIdSearch {
 					request.setAttribute("param", false);
 					request.setAttribute("btn", "計算");
 				}
-			} finally {
-				if (gDao != null) {
-					gDao.close();
-				}
-				if (eDao != null) {
-					eDao.close();
-				}
+			}
+		} finally {
+			if (gDao != null) {
+				gDao.close();
+			}
+			if (eDao != null) {
+				eDao.close();
 			}
 		}
-
 	}
 }

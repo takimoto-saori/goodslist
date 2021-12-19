@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jp.saori.goodslist.action.EventIdSearch;
 import jp.saori.goodslist.action.GoodsIdSearch;
@@ -25,8 +26,19 @@ public class EventTopServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//セッションを取得
-		doPost(request, response);
+		//セッションの取得
+		HttpSession session = request.getSession(false);
+		String jsp;
+		if (session != null) {
+			jsp = "/eventTop.jsp";
+		} else {
+			request.setAttribute("errorMessage", "不正アクセスです");
+			jsp = "/error.jsp";
+		}
+		//JSPへの転送
+		ServletContext context = getServletContext();
+		RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
+		dispatcher.forward(request, response);
 	}
 
 	/**
@@ -36,33 +48,40 @@ public class EventTopServlet extends HttpServlet {
 		//リクエスト処理
 		request.setCharacterEncoding("UTF-8");
 		String btn = request.getParameter("btn");
+		//セッションの取得
+		HttpSession session = request.getSession(false);
 		String jsp;
-		try {
-			if (btn != null && btn.equals("select")){
-				EventIdSearch eis = new EventIdSearch();
-				eis.execute(request);
-				jsp = "/eventTop.jsp";
-			} else if (btn != null && btn.equals("calc")) {
-				GoodsIdSearch gis = new GoodsIdSearch();
-				gis.execute(request);
-				jsp = "/eventTop.jsp";
-			} else {
-				request.setAttribute("errorMessage", "不正アクセスです");
-				request.setAttribute("backAddress", "search");
+		if (session != null) {
+			try {
+				if (btn != null && btn.equals("select")) {
+					EventIdSearch eis = new EventIdSearch();
+					eis.execute(request);
+					jsp = "/eventTop.jsp";
+				} else if (btn != null && btn.equals("calc")) {
+					GoodsIdSearch gis = new GoodsIdSearch();
+					gis.execute(request);
+					jsp = "/eventTop.jsp";
+				} else {
+					request.setAttribute("errorMessage", "不正アクセスです");
+					request.setAttribute("backAddress", "search");
+					jsp = "/error.jsp";
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "JDBCのエラーが発生しました");
+				request.setAttribute("backAddress", "event");
+				jsp = "/error.jsp";
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.setAttribute("errorMessage", "エラーが発生しました");
+				request.setAttribute("backAddress", "event");
 				jsp = "/error.jsp";
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			request.setAttribute("errorMessage", "エラーが発生しました");
-			request.setAttribute("backAddress", "event");
-			jsp = "/error.jsp";
-		} catch (Exception e) {
-			e.printStackTrace();
+		} else {
 			request.setAttribute("errorMessage", "エラーが発生しました");
 			request.setAttribute("backAddress", "event");
 			jsp = "/error.jsp";
 		}
-
 
 		//JSPへの転送
 		ServletContext context = getServletContext();

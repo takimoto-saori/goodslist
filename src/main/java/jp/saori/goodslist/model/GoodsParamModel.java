@@ -3,8 +3,8 @@ package jp.saori.goodslist.model;
 import java.io.Serializable;
 
 public class GoodsParamModel implements Serializable {
-	private String paramGoodsId;
-	private String paramNum;
+	private String paramGoodsId;		//グッズID
+	private String paramNum;			//購入数
 
 	public String getParamGoodsId() {
 		return paramGoodsId;

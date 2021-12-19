@@ -3,10 +3,10 @@ package jp.saori.goodslist.entity;
 import java.io.Serializable;
 
 public class EventBean implements Serializable {
-	private int eventId;
-	private String eventName;
-	private String artistName;
-	private String eventMemo;
+	private int eventId;			//イベントID
+	private String eventName;		//イベント名
+	private String artistName;		//アーティスト名
+	private String eventMemo;		//備考
 
 	public int getEventId() {
 		return eventId;

@@ -17,6 +17,7 @@ public class GoodsIdSearch {
 
 		//セッションを取得
 		HttpSession session = request.getSession(false);
+//		System.out.println("GoodsIdSearch : " + session);
 		EventBean eventList = null;
 		if (session != null) {
 			eventList = (EventBean) session.getAttribute("eventList");
@@ -45,12 +46,10 @@ public class GoodsIdSearch {
 				goodsListBean.setGoodsId(goodsBean.getGoodsId());
 				goodsListBean.setGoodsName(goodsBean.getGoodsName());
 				goodsListBean.setGoodsPrice(goodsBean.getGoodsPrice());
-				if(getGoodsId != null) {
-					for (int i = 0; i < getGoodsId.length; i++) {
-						int goodsId = Integer.parseInt(getGoodsId[i]);
-						if (goodsBean.getGoodsId() == goodsId) {
-							goodsListBean.setNum(Integer.parseInt(getNum[i]));
-						}
+				for (int i = 0; i < getGoodsId.length; i++) {
+					int goodsId = Integer.parseInt(getGoodsId[i]);
+					if (goodsBean.getGoodsId() == goodsId) {
+						goodsListBean.setNum(Integer.parseInt(getNum[i]));
 					}
 				}
 				goodsListBean.setMaxNum(goodsBean.getMaxNum());

@@ -6,24 +6,28 @@ import jp.saori.goodslist.dao.EventDao;
 import jp.saori.goodslist.entity.EventBean;
 
 public class EventInsert {
-	public void execute(HttpServletRequest request) throws Exception {
+	public int execute(HttpServletRequest request) throws Exception {
 		EventDao dao = null;
 		//登録する情報をリクエストパラメータから取得
 		String eventName = request.getParameter("eventName");
 		String artistName = request.getParameter("artistName");
-		String evnetMemo = request.getParameter("eventMemo");
+		String eventMemo = request.getParameter("eventMemo");
+
+		request.setAttribute("eventName", eventName);
+		request.setAttribute("artistName", artistName);
+		request.setAttribute("eventMemo", eventMemo);
+
+		int numRow = 0;
 
 		try {
 			if (eventName != null && !eventName.isEmpty()) {
 				EventBean bean = new EventBean();
 				bean.setEventName(eventName);
 				bean.setArtistName(artistName);
-				bean.setEventMemo(evnetMemo);
+				bean.setEventMemo(eventMemo);
 				dao = new EventDao();
-				int numRow = dao.insertEvent(bean);
-				if (numRow > 0) {
-					request.setAttribute("message", "イベント情報を登録しました");
-				} else {
+				numRow = dao.insertEvent(bean);
+				if (numRow == 0) {
 					request.setAttribute("message", "イベント情報を登録できませんでした");
 				}
 			} else {
@@ -34,5 +38,6 @@ public class EventInsert {
 				dao.close();
 			}
 		}
+		return numRow;
 	}
 }

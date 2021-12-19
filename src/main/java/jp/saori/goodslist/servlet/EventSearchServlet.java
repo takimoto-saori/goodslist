@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jp.saori.goodslist.action.EventSearch;
 
@@ -24,6 +25,13 @@ public class EventSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//セッションを取得
+		HttpSession session = request.getSession(false);
+//		System.out.println("(search)sessionの取得(false) : " + session);
+		if (session != null) {
+			session.invalidate();
+//			System.out.println("sessionを破棄しました");
+		}
 		//JSPへの転送
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher = context.getRequestDispatcher("/eventSearch.jsp");
@@ -51,7 +59,7 @@ public class EventSearchServlet extends HttpServlet {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("errorMessage", "JDBCのエラーが発生しました");
 			request.setAttribute("backAddress", "search");
 			jsp = "/error.jsp";
 		} catch (Exception e) {

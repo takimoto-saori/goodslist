@@ -104,4 +104,36 @@ public class GoodsDao {
 		}
 		return bean;
 	}
+
+	//goods表に登録するメソッド
+	public int insertGoods(GoodsBean goods) throws SQLException {
+		int numRow = 0;
+		PreparedStatement ps = null;
+		try {
+			//トランザクション開始
+			connection.setAutoCommit(false);
+			//SQL文
+			String sql = "INSERT INTO goods (event_id, goods_name, goods_price, max_num, goods_memo) VALUES (?, ?, ?, ?, ?)";
+			ps = connection.prepareStatement(sql);
+			//INパラメーターの設定
+			ps.setInt(1, goods.getEventId());
+			ps.setString(2, goods.getGoodsName());
+			ps.setInt(3, goods.getGoodsPrice());
+			ps.setInt(4, goods.getMaxNum());
+			ps.setString(5, goods.getGoodsMemo());
+			//SQLの発行、登録された行数を取得
+			numRow = ps.executeUpdate();
+		} finally {
+			if (numRow > 0) {
+				connection.commit();
+			} else {
+				connection.rollback();
+			}
+			//切断処理
+			if (ps != null) {
+				ps.close();
+			}
+		}
+		return numRow;
+	}
 }

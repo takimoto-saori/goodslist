@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import jp.saori.goodslist.action.EventInsert;
 
@@ -42,8 +43,17 @@ public class EventRegistrationServlet extends HttpServlet {
 		try {
 			if (btn != null && btn.equals("eventregist")){
 				EventInsert ei = new EventInsert();
-				ei.execute(request);
-				jsp = "/eventRegistration.jsp";
+				int numRow = ei.execute(request);
+				if (numRow == 0) {
+					jsp = "/eventRegistration.jsp";
+				} else {
+					//セッションの取得
+					HttpSession session = request.getSession(true);
+					session.setAttribute("backAddress", "registration");
+					session.setAttribute("back", "イベント登録ページ");
+					response.sendRedirect("/goodslist/complete.jsp");
+					return;
+				}
 			} else {
 				request.setAttribute("errorMessage", "不正アクセスです");
 				request.setAttribute("backAddress", "registration");
@@ -51,7 +61,7 @@ public class EventRegistrationServlet extends HttpServlet {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "エラーが発生しました");
+			request.setAttribute("errorMessage", "JDBCのエラーが発生しました");
 			request.setAttribute("backAddress", "registration");
 			jsp = "/error.jsp";
 		} catch (Exception e) {
@@ -60,6 +70,7 @@ public class EventRegistrationServlet extends HttpServlet {
 			request.setAttribute("backAddress", "registration");
 			jsp = "/error.jsp";
 		}
+
 		//転送処理
 		ServletContext context = getServletContext();
 		RequestDispatcher dispatcher = context.getRequestDispatcher(jsp);
